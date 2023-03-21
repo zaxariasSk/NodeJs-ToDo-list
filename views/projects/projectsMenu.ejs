@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<header>
+    <h2>Project Menu</h2>
+</header>
+
+<main>
+    <a href="/projects-menu/create-project">Create new Project</a>
+
+
+    <!-- TODO: add projects loop logic (itterate through every project) // -->
+
+<!--    <form action="/" method="post"></form>-->
+    <% if (projects.length > 0) {
+            for (const {dataValues: project} of projects) { %>
+
+        <div class="projects">
+            <div>Title: <%= project.title %></div>
+            <div>Description: <%= project.description %></div>
+            <a href="/projects-menu/edit-project/<%= project.id %>">Edit</a>
+            <form action="/projects-menu/delete" method="post">
+                <input type="hidden" value="<%= project.id %>" name="deleteProjectId">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+
+    <% }
+    } %>
+</main>
+
+<footer>
+</footer>
+</body>
+</html>
