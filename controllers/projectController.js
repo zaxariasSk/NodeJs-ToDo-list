@@ -32,7 +32,9 @@ exports.postCreateProject = async (req, res) => {
 
     // Create a new Project
     await Project.create({
-        title: projectName, description: projectDesc, UserId: userId
+        title: projectName,
+        description: projectDesc,
+        UserId: userId
     });
 
 
@@ -53,12 +55,10 @@ exports.postEditProject = async (req, res) => {
     const newTitle = req.body.projectTitle;
     const newDesc = req.body.projectDesc;
 
-    await Project.update(
-        {
-            title: newTitle,
-            description: newDesc
-        },
-        {where: {id: projectId}});
+    await Project.update({
+        title: newTitle,
+        description: newDesc
+    }, {where: {id: projectId}});
     res.redirect('/projects-menu');
 }
 

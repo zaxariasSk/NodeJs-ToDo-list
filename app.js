@@ -13,10 +13,11 @@ const db = require('./util/database');
 const sequelize = require('./util/database');
 
 // importing routes
-const indexRoute = require('./routes/indexRouter');
+const indexRoute = require('./routes/indexRoute');
 const loginRoute = require('./routes/sign-in-up/loginRoute');
 const registerRoute = require('./routes/sign-in-up/registerRouter');
 const projectRoute = require('./routes/projectRoute');
+const logoutRoute = require('./routes/logoutRoute');
 
 // initializing database models
 const User = require('./model/userModel');
@@ -55,6 +56,7 @@ User.hasMany(Project);
 app.use(indexRoute);
 app.use(loginRoute);
 app.use(registerRoute);
+app.use(logoutRoute);
 app.use('/projects-menu',projectRoute);
 
 

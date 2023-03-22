@@ -38,7 +38,7 @@ exports.postRegister = async (req, res) => {
         });
 
     } catch (err) {
-        console.error(err)
+        console.error(err);
         return res.redirect('/register');
     }
 }

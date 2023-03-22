@@ -9,16 +9,14 @@
 </head>
 <body>
 <header>
+    <%- include('../includes/logout.ejs') %>
+
     <h2>Project Menu</h2>
 </header>
 
 <main>
     <a href="/projects-menu/create-project">Create new Project</a>
 
-
-    <!-- TODO: add projects loop logic (itterate through every project) // -->
-
-<!--    <form action="/" method="post"></form>-->
     <% if (projects.length > 0) {
             for (const {dataValues: project} of projects) { %>
 
