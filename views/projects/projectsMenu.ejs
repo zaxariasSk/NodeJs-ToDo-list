@@ -18,17 +18,31 @@
     <a href="/projects-menu/create-project">Create new Project</a>
 
     <% if (projects.length > 0) {
-            for (const {dataValues: project} of projects) { %>
+            for (const {dataValues: project} of projects) {
+        let priority;
+        switch (project.priority) {
+            case 2:
+                 priority = 'high';
+                break;
+            case 1:
+                priority = 'medium';
+                break;
+            case 0:
+                priority = 'low';
+                break;
+        };
+    %>
+    <div class="projects">
+        <div>Title: <%= project.title %></div>
+        <div>Description: <%= project.description %></div>
+        <div>Priority: <%= priority %></div>
 
-        <div class="projects">
-            <div>Title: <%= project.title %></div>
-            <div>Description: <%= project.description %></div>
-            <a href="/projects-menu/edit-project/<%= project.id %>">Edit</a>
-            <form action="/projects-menu/delete" method="post">
-                <input type="hidden" value="<%= project.id %>" name="deleteProjectId">
-                <button type="submit">Delete</button>
-            </form>
-        </div>
+        <a href="/projects-menu/edit-project/<%= project.id %>">Edit</a>
+        <form action="/projects-menu/delete" method="post">
+            <input type="hidden" value="<%= project.id %>" name="deleteProjectId">
+            <button type="submit">Delete</button>
+        </form>
+    </div>
 
     <% }
     } %>

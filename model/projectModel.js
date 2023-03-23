@@ -15,6 +15,10 @@ const Project = sequelize.define('Project', {
     description: {
         type: DataTypes.STRING
     },
+    priority: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     // optional sequelize can understand foreign key by default
     UserId: {
         type: DataTypes.UUID,

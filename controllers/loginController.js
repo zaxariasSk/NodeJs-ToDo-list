@@ -13,19 +13,25 @@ exports.postLogin = async (req, res) => {
 
     const user = await User.findOne({where: {email: email}});
 
+    if(req.session) {
+        console.log('LISE TO EPITELOUS' + req.session.toString());
+    }
     // check if user exists
-    if(!user) {
+    if (!user) {
         console.log('user does not Exist');
         return res.redirect('/register');
     }
 
     // check if password is correct and if it is, create a session
-    if(await bcrypt.compare(password, user.password)) {
-        req.session.UserId = user.id;
+    const match = await bcrypt.compare(password, user.password);
+    if (match) {
+        req.session.UserId = await user.id;
         req.session.isLoggedIn = true;
 
-        await req.session.save(err => {
-            console.log(err.body);
+        console.log(req.session.UserId + "\n\n");
+        console.log(req.session.isLoggedIn + '\n\n');
+        req.session.save(err => {
+            console.log(err);
         });
 
         return res.redirect('/projects-menu');

@@ -8,7 +8,7 @@ exports.getProjectMenu = async (req, res) => {
 
         const user = await User.findOne({where: {id: userId}});
 
-        const projects = await user.getProjects();
+        const projects = await user.getProjects({order: [['priority', 'DESC']]});
         console.log(projects);
 
         console.log(req.projectExist)
@@ -28,12 +28,14 @@ exports.getCreateProject = (req, res) => {
 exports.postCreateProject = async (req, res) => {
     const projectName = req.body.projectName;
     const projectDesc = req.body.projectDesc;
+    const projectPriority = req.body.priority;
     const userId = req.session.UserId;
 
     // Create a new Project
     await Project.create({
         title: projectName,
         description: projectDesc,
+        priority: projectPriority,
         UserId: userId
     });
 
@@ -54,10 +56,12 @@ exports.postEditProject = async (req, res) => {
     const projectId = req.params.projectId;
     const newTitle = req.body.projectTitle;
     const newDesc = req.body.projectDesc;
+    const projectPriority = req.body.priority;
 
     await Project.update({
         title: newTitle,
-        description: newDesc
+        description: newDesc,
+        priority, projectPriority,
     }, {where: {id: projectId}});
     res.redirect('/projects-menu');
 }

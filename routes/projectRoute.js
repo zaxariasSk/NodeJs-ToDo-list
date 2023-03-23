@@ -13,7 +13,6 @@ router.get('/edit-project/:projectId', isAuth, projectController.getEditProject)
 
 router.post('/edit-project/:projectId', isAuth, projectController.postEditProject);
 
-
 router.post('/delete', isAuth, projectController.postDeleteProject);
 
 module.exports = router;

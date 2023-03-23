@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const path = require('path');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const cookieParser = require('cookie-parser');
 
 // Local database imports
 const db = require('./util/database');
@@ -23,14 +24,6 @@ const logoutRoute = require('./routes/logoutRoute');
 const User = require('./model/userModel');
 const Project = require('./model/projectModel');
 
-// Setting view engine and static (public) folder
-app.set('view engine', 'ejs');
-app.set('views', 'views');
-app.use(express.static(path.join(__dirname + '/public')));
-
-// Using Body Parser to handle incoming requests
-app.use(bodyParser.urlencoded({extended: false}));
-
 
 // Establishing session
 // creating 24 hours from milliseconds
@@ -39,13 +32,21 @@ const store = new SequelizeStore({
     db: db
 });
 
+app.use(cookieParser());
 app.use(session({
     secret: "thisismysecrctekey",
     store: store,
     saveUninitialized: false,
-    cookie: {maxAge: oneDay},
     resave: false
 }));
+
+// Setting view engine and static (public) folder
+app.set('view engine', 'ejs');
+app.set('views', 'views');
+app.use(express.static(path.join(__dirname + '/public')));
+
+// Using Body Parser to handle incoming requests
+app.use(bodyParser.urlencoded({extended: false}));
 
 // Sequelize Associations
 Project.belongsTo(User, {constraints: true, onDelete: 'CASCADE', onUpdate: 'CASCADE'});
@@ -53,11 +54,12 @@ User.hasMany(Project);
 
 
 // using Routes
-app.use(indexRoute);
 app.use(loginRoute);
 app.use(registerRoute);
 app.use(logoutRoute);
 app.use('/projects-menu',projectRoute);
+app.use(indexRoute);
+
 
 
 const initApp = async () => {
@@ -81,4 +83,5 @@ const initApp = async () => {
         console.error("Unable to connect to the database:", error.original);
     }
 };
-initApp().then(r => sequelize.sync());
+initApp().then(r => sequelize.sync({force: true}));
+// initApp().then(r => sequelize.sync());

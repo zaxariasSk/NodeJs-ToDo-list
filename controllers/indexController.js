@@ -1,3 +1,3 @@
-exports.loadIndex = (req, res, next) => {
+exports.loadIndex = (req, res) => {
     res.render('index');
 }
