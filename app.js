@@ -19,10 +19,13 @@ const loginRoute = require('./routes/sign-in-up/loginRoute');
 const registerRoute = require('./routes/sign-in-up/registerRouter');
 const projectRoute = require('./routes/projectRoute');
 const logoutRoute = require('./routes/logoutRoute');
+const taskRoute = require('./routes/tasks/taskRoute');
+
 
 // initializing database models
 const User = require('./model/userModel');
 const Project = require('./model/projectModel');
+const Task = require('./model/taskModel');
 
 
 // Establishing session
@@ -52,15 +55,16 @@ app.use(bodyParser.urlencoded({extended: false}));
 Project.belongsTo(User, {constraints: true, onDelete: 'CASCADE', onUpdate: 'CASCADE'});
 User.hasMany(Project);
 
+Task.belongsTo(Project, {constraints: true, onDelete: 'CASCADE', onUpdate: 'CASCADE'});
+Project.hasMany(Task);
 
 // using Routes
 app.use(loginRoute);
 app.use(registerRoute);
 app.use(logoutRoute);
 app.use('/projects-menu',projectRoute);
+app.use(taskRoute);
 app.use(indexRoute);
-
-
 
 const initApp = async () => {
     console.log("Testing the database connection..");
@@ -83,5 +87,5 @@ const initApp = async () => {
         console.error("Unable to connect to the database:", error.original);
     }
 };
-initApp().then(r => sequelize.sync({force: true}));
-// initApp().then(r => sequelize.sync());
+// initApp().then(r => sequelize.sync({force: true}));
+initApp().then(r => sequelize.sync());

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<%- include('../includes/logout.ejs') %>
+
+<% if(!tasks.length > 0) { %>
+    <h2>There are no tasks for this project</h2>
+<% } else {
+        for (const task of tasks) { %>
+
+    <div>
+        Name: <%= task.name %>
+    </div>
+    <div>
+        Description: <%= task.description %>
+    </div>
+    <form id="statusForm" action="/<%= task.id %>/change-status" method="post">
+        <label for="taskStatus">Status:</label>
+        <select name="taskStatus" id="taskStatus">
+            <% if(task.status === 'active') { %>
+                <option value="active">active</option>
+                <option value="completed">completed</option>
+            <% } else { %>
+                <option value="completed">completed</option>
+                <option value="active">active</option>
+            <% } %>
+            <input type="hidden" value="<%= task.status %>" id="hiddenTaskStatus">
+        </select>
+        <input type="hidden" value="<%= projectId %>" id="projectId" name="projectId">
+    </form>
+
+    <form action="/<%= task.id %>/delete" method="post">
+        <input type="hidden" value="<%= projectId %>" id="projectId" name="projectId">
+        <button type="submit">Delete Task</button>
+    </form>
+
+<% } %>
+
+<% } %>
+
+<a href="/<%= projectId %>/add-task">add new Task</a>
+
+<!-- Changing Task status-->
+<script>
+    const statusForm = document.querySelectorAll('#statusForm');
+    const taskStatus = document.querySelectorAll('#taskStatus');
+
+    [...taskStatus].forEach((el, i) => {
+        el.addEventListener('change', (event) => {
+
+            if (el.value !== statusForm[i].children[2].value) {
+                statusForm[i].submit();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

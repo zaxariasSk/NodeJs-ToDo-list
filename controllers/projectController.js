@@ -9,9 +9,7 @@ exports.getProjectMenu = async (req, res) => {
         const user = await User.findOne({where: {id: userId}});
 
         const projects = await user.getProjects({order: [['priority', 'DESC']]});
-        console.log(projects);
 
-        console.log(req.projectExist)
         res.render('projects/projectsMenu', {
             projects: projects
         });

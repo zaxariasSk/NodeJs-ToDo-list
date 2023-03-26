@@ -13,9 +13,6 @@ exports.postLogin = async (req, res) => {
 
     const user = await User.findOne({where: {email: email}});
 
-    if(req.session) {
-        console.log('LISE TO EPITELOUS' + req.session.toString());
-    }
     // check if user exists
     if (!user) {
         console.log('user does not Exist');
@@ -30,14 +27,19 @@ exports.postLogin = async (req, res) => {
 
         console.log(req.session.UserId + "\n\n");
         console.log(req.session.isLoggedIn + '\n\n');
-        req.session.save(err => {
-            console.log(err);
+
+        req.session.save((err) => {
+            if (err) {
+                console.log(err);
+                return res.redirect('/login');
+            } else {
+                return res.redirect('/projects-menu');
+            }
         });
 
-        return res.redirect('/projects-menu');
+    } else {
+        // if password is incorrect
+        console.log('your password is incorrect');
+        return res.redirect('/login');
     }
-
-    // if password is incorrect
-    console.log('your password is incorrect');
-    return res.redirect('/login');
 }
