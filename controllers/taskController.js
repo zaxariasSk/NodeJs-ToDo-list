@@ -125,7 +125,7 @@ exports.postDeleteTask = async (req, res) => {
         });
 
 
-        return res.redirect(`${projectId}/tasks`);
+        return res.redirect(`/${projectId}/tasks`);
 
     } catch (err) {
         console.log(err);
